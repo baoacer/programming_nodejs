@@ -1,25 +1,23 @@
 const express = require('express')
 const path = require('path');
+const TaskService = require('../services/task.service');
+const TaskController = require('../controller/task.controller');
+const uuidv4 = require('uuid');
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+let tasks = TaskService.getTasks()
 
-router.get('/index.html', function (req, res) {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-})
+router.get('/', TaskController.getTasks)
 
-router.get('/process_get', function (req, res) {
+router.post('/add', TaskController.addTask)
 
-    // Chuan bi output trong dinh dang JSON
-    response = {
-    first_name:req.query.first_name,
-    last_name:req.query.last_name
-    };
-    console.log(response);
-    res.end(JSON.stringify(response));
-})
+router.post('/edit/:id', TaskController.updateTask)
+
+router.post('/delete/:id', TaskController.deleteTask)
+
+
+
+
 
 module.exports = router
